@@ -1,0 +1,39 @@
+package com.grishchenkova.app.httpClient
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class WeatherResponse(
+    @SerialName("location") val location: Location? = Location(),
+    @SerialName("current") val current: Current? = Current()
+)
+
+@Serializable
+data class Location(
+    @SerialName("name") val name: String? = "name",
+    @SerialName("region") val region: String? = "region",
+    @SerialName("country") val country: String? = "country",
+    @SerialName("lat") val lat: Double? = 0.0,
+    @SerialName("lon") val lon: Double? = 0.0,
+    @SerialName("tz_id") val tzId: String? = "tzId",
+    @SerialName("localtime_epoch") val localtimeEpoch: Long? = 1694464696,
+    @SerialName("localtime") val localtime: String? = "localtime"
+)
+
+@Serializable
+data class Current(
+    @SerialName("last_updated_epoch") val lastUpdatedEpoch: Long? = 1694464200,
+    @SerialName("last_updated") val lastUpdated: String? = "2023-09-11 23:30",
+    @SerialName("temp_c") val tempC: Double? = 11.0,
+    @SerialName("temp_f") val tempF: Double? = 51.8,
+    @SerialName("is_day") val isDay: Int? = 0,
+    @SerialName("condition") val condition: Condition? = Condition()
+)
+
+@Serializable
+data class Condition(
+    @SerialName("text") val text: String? = "Clear",
+    @SerialName("icon") val icon: String? = "//cdn.weatherapi.com/weather/64x64/night/113.png",
+    @SerialName("code") val code: Int? = 100
+)

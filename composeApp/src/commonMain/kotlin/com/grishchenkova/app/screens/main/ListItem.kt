@@ -1,4 +1,4 @@
-package com.grishchenkova.app.screens
+package com.grishchenkova.app.screens.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
