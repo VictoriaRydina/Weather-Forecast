@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.grishchenkova.app.model.details.ForecastModel
 import com.grishchenkova.app.screens.detailsScreen.view.HourlyItem
-import com.grishchenkova.app.theme.BackgroundDarkBlue
 
 @Composable
 fun CardHourlyTemperature(
@@ -38,7 +37,7 @@ fun CardHourlyTemperature(
     Box(
         modifier = modifier.fillMaxWidth().padding(all = 8.dp)
             .clip(RoundedCornerShape(16.dp))
-            .background(color = BackgroundDarkBlue.copy(alpha = 0.5f))
+            .background(color = Color.White.copy(0.25f))
 
     ) {
         Column(
@@ -52,12 +51,12 @@ fun CardHourlyTemperature(
             ) {
                 Text(
                     text = "Today",
-                    style = TextStyle(fontSize = 24.sp, fontWeight = FontWeight.Bold),
+                    style = TextStyle(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                     color = Color.White
                 )
                 Text(
                     text = today.value.date,
-                    style = TextStyle(fontSize = 24.sp),
+                    style = TextStyle(fontSize = 20.sp),
                     color = Color.White
                 )
             }
@@ -65,7 +64,7 @@ fun CardHourlyTemperature(
                 modifier = modifier.fillMaxWidth()
                     .padding(all = 8.dp)
             ) {
-                items(today.value.hours) {hour ->
+                items(today.value.hours) { hour ->
                     HourlyItem(hour)
                 }
             }

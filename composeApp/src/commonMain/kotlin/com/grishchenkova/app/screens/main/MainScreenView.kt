@@ -2,6 +2,7 @@ package com.grishchenkova.app.screens.main
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -38,8 +39,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.grishchenkova.app.httpClient.WeatherResponse
 import com.grishchenkova.app.model.WeatherModel
+import com.grishchenkova.app.screens.details.DetailScreen
 
 @Composable
 fun MainScreenView(viewModel: MainScreenViewModel) {
@@ -55,8 +59,10 @@ fun MainScreenView(viewModel: MainScreenViewModel) {
             )
         }
     }
-    Box(modifier = Modifier
-        .background(largeRadialGradient)) {
+    Box(
+        modifier = Modifier
+            .background(largeRadialGradient)
+    ) {
         Column {
             MainCard(weatherResponse)
             WeatherList(weatherResponse)
@@ -66,6 +72,8 @@ fun MainScreenView(viewModel: MainScreenViewModel) {
 
 @Composable
 fun MainCard(item: WeatherResponse) {
+
+    val navigator = LocalNavigator.currentOrThrow
 
     Column(
         modifier = Modifier
@@ -120,7 +128,9 @@ fun MainCard(item: WeatherResponse) {
                     }
                 }
                 Card(
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier.padding(16.dp).clickable {
+                        navigator.push(DetailScreen)
+                    },
                     colors = CardDefaults.cardColors(containerColor = Color.White.copy(0.3f)),
                     elevation = CardDefaults.cardElevation(4.dp),
                     shape = RoundedCornerShape(4.dp),
