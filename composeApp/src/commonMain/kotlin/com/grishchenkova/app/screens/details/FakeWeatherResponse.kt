@@ -10,7 +10,7 @@ import com.grishchenkova.app.httpClient.response.Location
 import com.grishchenkova.app.httpClient.response.WeatherResponse
 import kotlin.random.Random
 
-class StubWeatherResponse {
+class FakeWeatherResponse {
 
     val location = Location(
         name = "City",

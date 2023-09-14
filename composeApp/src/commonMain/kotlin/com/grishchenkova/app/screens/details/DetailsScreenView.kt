@@ -125,6 +125,10 @@ fun DetailsScreenContent(model: WeatherResponse, paddingValues: PaddingValues) {
 
         CardTemperature(model)
 
+//        Text(
+//            text = stringResource(SharedRes.strings.test)
+//        )
+
         Spacer(modifier = Modifier.fillMaxWidth().height(8.dp))
 
         CardCloudHumidityWindSpeed(model)

@@ -4,7 +4,6 @@ import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import com.grishchenkova.app.httpClient.response.WeatherResponse
 import com.grishchenkova.app.mainRepository.MainRepository
-import com.grishchenkova.app.mainRepository.WeatherResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
@@ -27,7 +26,7 @@ class DetailsScreenViewModel(private val repository: MainRepository) : ScreenMod
 //                is WeatherResult.Error -> Resource.Error(result.errorMessage)
 //            }
             delay(5000)
-            _weatherState.value = Resource.Success(StubWeatherResponse().value)
+            _weatherState.value = Resource.Success(FakeWeatherResponse().value)
             delay(10000)
             _weatherState.value = Resource.Error(message = "Content not available")
         }

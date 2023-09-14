@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.libres)
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.moko.resources)
 }
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
@@ -26,6 +27,8 @@ kotlin {
         it.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            export("dev.icerock.moko:resources:0.23.0")
+            export("dev.icerock.moko:graphics:0.9.0")
         }
     }
 
@@ -43,6 +46,8 @@ kotlin {
                 implementation(libs.ktor.core)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.koin.core)
+                implementation(libs.moko.resources)
+                implementation(libs.moko.resources.compose)
             }
         }
 
@@ -68,7 +73,6 @@ kotlin {
                 implementation(libs.ktor.client.darwin)
             }
         }
-
     }
 }
 
@@ -102,4 +106,8 @@ libres {
 buildConfig {
     // BuildConfig configuration here.
     // https://github.com/gmazzo/gradle-buildconfig-plugin#usage-in-kts
+}
+multiplatformResources {
+    multiplatformResourcesPackage = "com.grishchenkova.app"
+    multiplatformResourcesClassName = "SharedRes"
 }
