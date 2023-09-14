@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Size
@@ -37,21 +39,25 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import com.grishchenkova.app.httpClient.response.WeatherResponse
-import com.grishchenkova.app.screens.details.DetailScreen
 import com.grishchenkova.app.screens.main.MainScreenViewModel
 import com.grishchenkova.app.screens.main.WeatherState
 import com.grishchenkova.app.utils.getCurrentDate
 
 @Composable
-fun MainWeatherScreenView(viewModel: MainScreenViewModel) {
-
+fun MainWeatherScreenView(viewModel: MainScreenViewModel, navigateTo: () -> Unit) {
     val weatherState by viewModel.listWeatherState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.getWeatherForecastsForCities(listOf("Rostov-on-Done", "Smolensk", "Moscow", "Saint-Petersburg", "Sochi"))
+        viewModel.getWeatherForecastsForCities(
+            listOf(
+                "Rostov-on-Done",
+                "Smolensk",
+                "Moscow",
+                "Saint-Petersburg",
+                "Sochi"
+            )
+        )
     }
 
     val largeRadialGradient = object : ShaderBrush() {
@@ -77,14 +83,15 @@ fun MainWeatherScreenView(viewModel: MainScreenViewModel) {
                 modifier = Modifier.background(largeRadialGradient)
             ) {
                 Column {
-                    weatherData.firstOrNull()?.let { MainWeatherCard(it) }
+                    weatherData.firstOrNull()?.let { MainWeatherCard(it, navigateTo) }
                     WeatherList(weatherData)
                 }
             }
         }
 
-        is  WeatherState.Error -> {
+        is WeatherState.Error -> {
             val errorMessage = (weatherState as WeatherState.Error).errorMessage
+            Box(modifier = Modifier.fillMaxSize().background(Color.Cyan))
             // Display an error message
         }
     }
@@ -92,8 +99,8 @@ fun MainWeatherScreenView(viewModel: MainScreenViewModel) {
 }
 
 @Composable
-fun MainWeatherCard(item: WeatherResponse) {
-    val navigator = LocalNavigator.currentOrThrow
+fun MainWeatherCard(item: WeatherResponse, onClick: () -> Unit) {
+    val click = remember { onClick }
     Column(
         modifier = Modifier
             .padding(5.dp)
@@ -103,9 +110,7 @@ fun MainWeatherCard(item: WeatherResponse) {
 
         MainLocationRow(item)
         Card(
-            modifier = Modifier.padding(16.dp).clickable {
-                navigator.push(DetailScreen)
-            },
+            modifier = Modifier.padding(16.dp).clickable { click() },
             colors = CardDefaults.cardColors(containerColor = Color.White.copy(0.3f)),
             shape = RoundedCornerShape(8.dp)
         ) {

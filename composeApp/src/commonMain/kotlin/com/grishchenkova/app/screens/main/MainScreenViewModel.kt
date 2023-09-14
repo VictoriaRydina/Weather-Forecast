@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class MainScreenViewModel(private val repository: MainRepository) : ScreenModel {
 
+
     private val _listWeatherState = MutableStateFlow<WeatherState>(WeatherState.Loading)
     val listWeatherState = _listWeatherState.asStateFlow()
 

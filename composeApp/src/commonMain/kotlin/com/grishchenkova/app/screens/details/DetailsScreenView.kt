@@ -25,24 +25,21 @@ import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import com.grishchenkova.app.model.details.ForecastModel
 import com.grishchenkova.app.screens.details.view.CardDailyTemperature
 import com.grishchenkova.app.screens.details.view.CardHourlyTemperature
 import com.grishchenkova.app.screens.details.view.CardTemperature
 import com.grishchenkova.app.screens.detailsScreen.view.CardCloudHumidityWindSpeed
-import com.grishchenkova.app.screens.main.MainScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreenView(
     viewModel: DetailsScreenViewModel,
     model: ForecastModel = Temp.forecastModel,
-    actionBack: () -> Unit = {},
+    actionBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val navigator = LocalNavigator.currentOrThrow
+
     val largeRadialGradient = object : ShaderBrush() {
         override fun createShader(size: Size): Shader {
             val biggerDimension = maxOf(size.height, size.width)
@@ -65,7 +62,7 @@ fun DetailsScreenView(
                     title = { Text(text = model.current.city, color = Color.White) },
                     navigationIcon = {
                         IconButton(
-                            onClick = { navigator.push(MainScreen) }
+                            onClick = { actionBack() }
                         ) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
