@@ -25,17 +25,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.grishchenkova.app.model.details.ForecastModel
-import com.grishchenkova.app.screens.detailsScreen.view.DailyItem
+import com.grishchenkova.app.httpClient.response.WeatherResponse
 
 @Composable
 fun CardDailyTemperature(
-    model: ForecastModel,
+    model: WeatherResponse,
     modifier: Modifier = Modifier
 ) {
     val days = remember {
         mutableStateOf(
-            model.forecast.forecastDays
+            model.forecast?.forecastDay
         )
     }
     Box(
@@ -69,8 +68,10 @@ fun CardDailyTemperature(
                 modifier = modifier.fillMaxWidth()
                     .padding(all = 8.dp)
             ) {
-                items(days.value) { day ->
-                    DailyItem(day)
+                days.value?.let { days ->
+                    items(days) { day ->
+                        DailyItem(day)
+                    }
                 }
             }
         }

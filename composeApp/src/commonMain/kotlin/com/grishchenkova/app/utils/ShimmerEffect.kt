@@ -17,7 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.unit.IntSize
 
-fun Modifier.shimmerEffect(baseColor: Color = Color(0xFF606060), accentColor: Color = Color(0xFF525252) ): Modifier = composed {
+fun Modifier.shimmerEffect(
+    baseColor: Color = Color(0xFF47BFDF),
+    accentColor: Color = Color(0xFF4A91FF)
+): Modifier = composed {
     var size by remember {
         mutableStateOf(IntSize.Zero)
     }

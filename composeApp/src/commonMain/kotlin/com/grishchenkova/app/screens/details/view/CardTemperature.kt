@@ -25,14 +25,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.grishchenkova.app.model.details.ForecastModel
+import com.grishchenkova.app.httpClient.response.WeatherResponse
 import com.seiko.imageloader.rememberImagePainter
 
 @Composable
-fun CardTemperature(model: ForecastModel, modifier: Modifier = Modifier) {
-    val current = remember {
+fun CardTemperature(model: WeatherResponse, modifier: Modifier = Modifier) {
+    val state = remember {
         mutableStateOf(
-            model.current
+            model
         )
     }
     Box(
@@ -47,8 +47,7 @@ fun CardTemperature(model: ForecastModel, modifier: Modifier = Modifier) {
         ) {
             Image(
                 painter = rememberImagePainter(
-                    url = /*"https://${current.value.condition.icon}" ?:*/
-                    "https://cdn.weatherapi.com/weather/64x64/night/113.png"
+                    url = "https://${state.value.current?.condition?.icon}"
                 ),
                 contentDescription = "condition image",
                 contentScale = ContentScale.Crop,
@@ -57,28 +56,30 @@ fun CardTemperature(model: ForecastModel, modifier: Modifier = Modifier) {
                     .clip(MaterialTheme.shapes.medium)
             )
             Text(
-                text = current.value.currentTemp,
+                text = state.value.current?.tempC.toString(),
                 style = TextStyle(fontSize = 65.sp),
                 color = Color.White
             )
-            Text(
-                text = current.value.condition.text,
-                style = TextStyle(fontSize = 16.sp),
-                color = Color.White
-            )
+            state.value.current?.condition?.text?.let {
+                Text(
+                    text = it,
+                    style = TextStyle(fontSize = 16.sp),
+                    color = Color.White
+                )
+            }
             Row(
                 modifier = modifier.fillMaxWidth()
                     .padding(bottom = 8.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "Max.: ${current.value.maxTemp}ºC",
+                    text = "Max.: ${state.value.forecast?.forecastDay?.firstOrNull()?.day?.maxTemp}ºC",
                     style = TextStyle(fontSize = 18.sp),
                     color = Color.White
                 )
                 Spacer(modifier = modifier.width(8.dp))
                 Text(
-                    text = "Min.: ${current.value.minTemp}ºC",
+                    text = "Min.: ${state.value.forecast?.forecastDay?.firstOrNull()?.day?.minTemp}ºC",
                     style = TextStyle(fontSize = 18.sp),
                     color = Color.White
                 )

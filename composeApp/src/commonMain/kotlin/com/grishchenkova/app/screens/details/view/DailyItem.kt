@@ -1,4 +1,4 @@
-package com.grishchenkova.app.screens.detailsScreen.view
+package com.grishchenkova.app.screens.details.view
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,25 +22,29 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.grishchenkova.app.model.details.ForecastDay
+import com.grishchenkova.app.httpClient.response.ForecastDay
 import com.seiko.imageloader.rememberImagePainter
 
 @Composable
 fun DailyItem(model: ForecastDay, modifier: Modifier = Modifier) {
+    val state = remember {
+        mutableStateOf(
+            model
+        )
+    }
     Row(
         modifier = modifier.fillMaxWidth().padding(all = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = "${model.date}",
+            text = "${state.value.date}",
             style = TextStyle(fontSize = 16.sp),
             color = Color.White
         )
         Image(
             painter = rememberImagePainter(
-                url = /*"https://${current.value.condition.icon}" ?:*/
-                "https://cdn.weatherapi.com/weather/64x64/night/113.png"
+                url = "https://${state.value.day?.condition?.icon}"
             ),
             contentDescription = "condition image",
             contentScale = ContentScale.Crop,
@@ -49,13 +55,13 @@ fun DailyItem(model: ForecastDay, modifier: Modifier = Modifier) {
         Box {
             Row {
                 Text(
-                    text = "${model.day.maxTemp}°C",
+                    text = "${state.value.day?.maxTemp}°C",
                     style = TextStyle(fontSize = 16.sp),
                     color = Color.White
                 )
                 Spacer(modifier = modifier.width(4.dp))
                 Text(
-                    text = "${model.day.minTemp}°C",
+                    text = "${state.value.day?.minTemp}°C",
                     style = TextStyle(fontSize = 16.sp),
                     color = Color.White
                 )

@@ -20,27 +20,46 @@ class ApiService {
         const val API_KEY = "fdc432067481478794c145222230609"
     }
 
-    suspend fun getWeatherForecastsForCities(cities: List<String>): List<WeatherResponse> = coroutineScope {
+    suspend fun getWeatherForecastsForCities(cities: List<String>): List<WeatherResponse> =
+        coroutineScope {
 
-        val requests = cities.map { city ->
-            async {
-                val url = "$GET_WEATHER_URL$API_KEY&q=$city&days=1&aqi=no&alerts=no"
-                val response = httpClient.get(url) {
-                    contentType(ContentType.Application.Json)
+            val requests = cities.map { city ->
+                async {
+                    val url = "$GET_WEATHER_URL$API_KEY&q=$city&days=1&aqi=no&alerts=no"
+                    val response = httpClient.get(url) {
+                        contentType(ContentType.Application.Json)
+                    }
+                    val json = Json {
+                        isLenient = true
+                        ignoreUnknownKeys = true
+                    }
+                    json.decodeFromString(
+                        WeatherResponse.serializer(),
+                        response.bodyAsText()
+                    )
                 }
-                val json = Json {
-                    isLenient = true
-                    ignoreUnknownKeys = true
-                }
-                json.decodeFromString(
-                    WeatherResponse.serializer(),
-                    response.bodyAsText()
-                )
             }
+
+            val responses = requests.awaitAll()
+            httpClient.close()
+            responses
         }
 
-        val responses = requests.awaitAll()
-        httpClient.close()
-        responses
+    suspend fun getWeatherForecast(city: String): WeatherResponse = coroutineScope {
+        val request = async {
+            val url = "$GET_WEATHER_URL$API_KEY&q=$city"
+            val response = httpClient.get(url) {
+                contentType(ContentType.Application.Json)
+            }
+            val json = Json {
+                isLenient = true
+                ignoreUnknownKeys = true
+            }
+            json.decodeFromString(
+                WeatherResponse.serializer(),
+                response.bodyAsText()
+            )
+        }
+        request.await()
     }
 }

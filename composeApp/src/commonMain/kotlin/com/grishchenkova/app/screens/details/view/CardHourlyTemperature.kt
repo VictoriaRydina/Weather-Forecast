@@ -21,17 +21,21 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.grishchenkova.app.model.details.ForecastModel
-import com.grishchenkova.app.screens.detailsScreen.view.HourlyItem
+import com.grishchenkova.app.httpClient.response.WeatherResponse
 
 @Composable
 fun CardHourlyTemperature(
     modifier: Modifier = Modifier,
-    model: ForecastModel
+    model: WeatherResponse
 ) {
-    val today = remember {
+    val forecastDay = remember {
         mutableStateOf(
-            model.forecast.forecastDays[0]
+            model.forecast?.forecastDay?.firstOrNull()
+        )
+    }
+    val hours = remember {
+        mutableStateOf(
+            forecastDay.value?.hours
         )
     }
     Box(
@@ -55,7 +59,7 @@ fun CardHourlyTemperature(
                     color = Color.White
                 )
                 Text(
-                    text = today.value.date,
+                    text = forecastDay.value?.date ?: "",
                     style = TextStyle(fontSize = 20.sp),
                     color = Color.White
                 )
@@ -64,8 +68,10 @@ fun CardHourlyTemperature(
                 modifier = modifier.fillMaxWidth()
                     .padding(all = 8.dp)
             ) {
-                items(today.value.hours) { hour ->
-                    HourlyItem(hour)
+                hours.value?.let { hours ->
+                    items(hours) { hour ->
+                        HourlyItem(hour)
+                    }
                 }
             }
         }

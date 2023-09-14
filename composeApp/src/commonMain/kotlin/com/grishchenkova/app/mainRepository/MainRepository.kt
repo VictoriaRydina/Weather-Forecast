@@ -14,6 +14,15 @@ class MainRepository(private val apiService: ApiService) {
             WeatherResult.Error(exception.message ?: "Unknown error")
         }
     }
+
+    suspend fun getWeatherForecast(city: String): WeatherResult<WeatherResponse> {
+        return try {
+            val weatherData = apiService.getWeatherForecast(city)
+            WeatherResult.Success(weatherData)
+        } catch (e: Exception) {
+            WeatherResult.Error(e.message ?: "Unknown error")
+        }
+    }
 }
 
 sealed class WeatherResult<out T : Any> {

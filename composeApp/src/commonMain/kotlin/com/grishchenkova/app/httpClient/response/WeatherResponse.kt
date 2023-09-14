@@ -48,11 +48,23 @@ data class Forecast(
 data class ForecastDay(
     @SerialName("date") val date: String? = "2023-09-11",
     @SerialName("date_epoch") val dateEpoch: Long? = 1694649600,
-    @SerialName("day") val day: Day? = Day()
+    @SerialName("day") val day: Day? = Day(),
+    @SerialName("hour") val hours: List<Hour>? = listOf(Hour())
 )
 
 @Serializable
 data class Day(
     @SerialName("maxtemp_c") val maxTemp: Double? = 0.0,
-    @SerialName("mintemp_c") val minTemp: Double? = 0.0
+    @SerialName("mintemp_c") val minTemp: Double? = 0.0,
+    @SerialName("condition") val condition: Condition? = Condition(),
+)
+
+@Serializable
+data class Hour(
+    @SerialName("cloud") val cloud: Int? = 0,
+    @SerialName("condition") val condition: Condition? = Condition(),
+    @SerialName("humidity") val humidity: Int? = 0,
+    @SerialName("temp_c") val tempC: Double? = 0.0,
+    @SerialName("time") val time: String? = "",
+    @SerialName("wind_kph") val windKph: Double? = 0.0,
 )
