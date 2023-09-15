@@ -47,8 +47,8 @@ kotlin {
                 implementation(libs.ktor.core)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.koin.core)
-                api(libs.moko.resources)
-                api(libs.moko.resources.compose)
+                implementation(libs.moko.resources)
+                implementation(libs.moko.resources.compose)
 
             }
         }
@@ -67,6 +67,8 @@ kotlin {
                 implementation(libs.kotlinx.coroutines.android)
                 implementation(libs.ktor.client.okhttp)
                 implementation(libs.koin.android)
+                implementation(libs.moko.resources)
+                implementation(libs.moko.resources.compose)
             }
         }
 
