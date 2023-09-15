@@ -5,5 +5,12 @@ plugins {
     alias(libs.plugins.libres).apply(false)
     alias(libs.plugins.buildConfig).apply(false)
     alias(libs.plugins.kotlinx.serialization).apply(false)
-    alias(libs.plugins.moko.resources).apply(false)
+}
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath(libs.resourcesGradlePlugin)
+    }
 }

@@ -5,7 +5,8 @@ plugins {
     alias(libs.plugins.libres)
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.kotlinx.serialization)
-    alias(libs.plugins.moko.resources)
+    id("dev.icerock.mobile.multiplatform-resources")
+
 }
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
@@ -46,8 +47,9 @@ kotlin {
                 implementation(libs.ktor.core)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.koin.core)
-                implementation(libs.moko.resources)
-                implementation(libs.moko.resources.compose)
+                api(libs.moko.resources)
+                api(libs.moko.resources.compose)
+
             }
         }
 
@@ -109,5 +111,4 @@ buildConfig {
 }
 multiplatformResources {
     multiplatformResourcesPackage = "com.grishchenkova.app"
-    multiplatformResourcesClassName = "SharedRes"
 }
